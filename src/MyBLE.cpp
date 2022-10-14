@@ -32,9 +32,9 @@ void MyBLE::init(NimBLEServer *pBLE_SERVER)
 void MyBLE::initEngineBLE()
 {
     pEngineServices = gpServer->createService(BLE_SERVICE_ENGINE_UUID);
-    pEngineServices->createCharacteristic(BLE_ENGINE_SPEED_METER_CHARACTERISTIC);
-    pEngineServices->createCharacteristic(BLE_ENGINE_LOAD_CHARACTERISTIC);
-    pEngineServices->createCharacteristic(BE_ENGINE_RPM_CHARACTERISTIC);
+    pEngineServices->createCharacteristic(BLE_ENGINE_SPEED_METER_CHARACTERISTIC, NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::NOTIFY);
+    pEngineServices->createCharacteristic(BLE_ENGINE_LOAD_CHARACTERISTIC, NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::NOTIFY);
+    pEngineServices->createCharacteristic(BE_ENGINE_RPM_CHARACTERISTIC, NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::NOTIFY);
     pEngineServices->start();
 }
 
