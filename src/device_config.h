@@ -3,6 +3,14 @@
 /// BLE SERIAL EMULATOR
 #define DEBUG
 
+#define DEBUG_BLE_SERIAL_EMULATOR
+//
+#ifdef ENABLE_CAN_FEATURE
+#define CAN_FEATURE
+#endif
+
+// #define COMMANDER_SERIAL_TO_BLE
+//
 /// SENSOR DATA LOG
 #define DEBUG_DATA_LOG
 #endif
