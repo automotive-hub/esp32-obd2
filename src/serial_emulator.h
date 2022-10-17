@@ -3,10 +3,11 @@
 #include <NimBLEServer.h>
 #include <Arduino.h>
 #include <MyBLE.h>
+#include <OBDCommanderStruct.h>
 
-#ifndef MYBLE_H_
-#define MYBLE_H_
-#endif
+// #ifndef MYBLE_H_
+// #define MYBLE_H_
+// #endif
 
 #ifdef DEBUG
 /* TODO mock create fake sensor data :> (currently in order & shipping :>)
@@ -59,10 +60,16 @@ void BLESerialEmulator::init(MyBLE *myBLE)
     gpMyBLE = myBLE;
 };
 
+#ifdef DEBUG_DATA_LOG
+const String debugTitle = "[DEV] BLESerialEmulator:\t";
+#endif
+
 void BLESerialEmulator::log()
 {
 #ifdef DEBUG_DATA_LOG
-    Serial.println("[DEV] BLESerialEmulator:\t" + String(key) + ":\t" + value + ":\t" + genericBLE_UUID);
+    String unit = "(" + getOBDUnit(key) + ")";
+    String obdName = getOBDName(key);
+    Serial.println(debugTitle + "[" + String(key) + "] " + obdName + ":\t" + value + unit + ":\t" + genericBLE_UUID);
 #endif
 }
 
@@ -71,23 +78,9 @@ void BLESerialEmulator::start()
     while (Serial.available())
     {
         parsingCommandFromSerial();
-        switch (key)
-        {
-        case 1:
-            gpMyBLE->setEngineSpeedMeter(value);
-            break;
-        case 2:
-            gpMyBLE->setEngineRPM(value);
-            break;
-        case 3:
-            gpMyBLE->setEngineLoad(value);
-            break;
-        case 69:
-            gpMyBLE->setGeneric(value, (char *)genericBLE_UUID.c_str());
-            break;
-        default:
-            break;
-        }
+        char *ble_characteristic_uuid = getBLECharacteristicGattUUIDFromOBD(key);
+        char *ble_service_uuid = getBLEServiceGattUUIDFromOBD(key);
+        gpMyBLE->setGeneric(ble_service_uuid, ble_characteristic_uuid, value);
         log();
         Serial.flush();
     }
