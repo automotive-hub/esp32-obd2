@@ -11,6 +11,7 @@ void MyBLE::init(NimBLEServer *pBLE_SERVER)
 
     // Bringing ours BLE Services up and it corrsponding charecteristic
     initEngineBLE();
+    initVehicleBLE();
 
     /// Advertising GATT
     const char *manufacturer = DEVICE_NAME;
@@ -18,6 +19,7 @@ void MyBLE::init(NimBLEServer *pBLE_SERVER)
     // pAdvertising->addServiceUUID(BLE_SERVICE_PROXIMITY_UUID);
     pAdvertising->setManufacturerData(manufacturer);
     pAdvertising->addServiceUUID(BLE_SERVICE_ENGINE_UUID);
+    pAdvertising->addServiceUUID(BLE_SERVICE_VEHICLE_UUID);
     //...
     //...
     pAdvertising->addServiceUUID(BLE_SERVICE_GENERIC_UUID);
