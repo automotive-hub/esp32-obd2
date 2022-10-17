@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <NimBLEDevice.h>
-#include "NimBLEDevice.h"
-#include "BLE_DESIGN.g.h"
+#include <NimBLEDevice.h>
+#include <BLE_DESIGN.g.h>
 
 // Hidden wrapper class for setting GATT Server (Services, Characteristics)
 // TODO Make ESP32 running 2 core with xTask
@@ -18,6 +18,8 @@ class MyBLE
 private:
     NimBLEServer *gpServer;
     NimBLEService *pEngineServices;
+    NimBLEService *pVehicleServices;
+
     NimBLEService *pGenericServices;
 
     //
@@ -29,6 +31,7 @@ private:
 
     // Abstaction for bring-up services & charecteristic
     void initEngineBLE();
+    void initVehicleBLE();
     ///
 
     /* data */
@@ -47,8 +50,9 @@ public:
     //
     // BLE_SERVICE_UUID
     // with dynamic BLE_CHARACTERISTIC_UUID
-    void setGeneric(String number, char * BLE_UUID, bool isNotify = true);
-
+    void setGeneric(String number, char *BLE_UUID, bool isNotify = true);
+    // void setGeneric(char *BLE_UUID, String number, bool isNotify = true);
+    void setGeneric(char *BLE_SERVICE_UUID, char *BLE_CHARACTERISTIC_UUID, String number, bool isNotify = true);
     // TODO :> OTA
     void enableOTA();
 
@@ -76,4 +80,6 @@ public:
         };
     };
 };
+
+// MyBLE myBLELib;
 #endif
